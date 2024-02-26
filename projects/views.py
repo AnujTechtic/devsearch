@@ -4,11 +4,11 @@ from .models import Project
 from .forms import ProjectForm
 from django.contrib.auth.decorators import login_required
 
-
+@login_required(login_url='login')
 def projecs(request):
     projects = Project.objects.all()
     return render(request, 'projects/projec.html', {'projects':projects})
-
+@login_required(login_url='login')
 def project(request, pk):
     projectObj = Project.objects.get(id=pk)
     # tags = projectObj.tags.all()

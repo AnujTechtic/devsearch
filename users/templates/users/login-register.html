@@ -1,10 +1,7 @@
 {% extends 'main.html' %}
 {% load static %}
 {% block content %}
-{% if page == 'register' %}
-   
-
- 
+{% if page == 'register' %} 
     <div class="auth">
       <div class="card">
         <div class="auth__header text-center">
@@ -14,7 +11,6 @@
           <h3>Register an Account </h3>
           <p>Create a new developer account</p>
         </div>
-
         <form method="post" action="{% url 'register' %}" class="form auth__form">
           <!-- Input:Text -->
         {% csrf_token %}
@@ -23,21 +19,14 @@
             <div class="form__field">
               <label for="formInput#text">{{field.label}} </label>
               {{field}}
-
                 <!-- {% if field.help_text  %}
                     <small>{{field.help_text}}</small>
-                {% endif %} -->
-                
+                {% endif %} -->                 
                 {% for error in field.errors %}
                 <p style="color: red;">{{error}}</p>
                 {% endfor %}
-
             </div>
-            {% endfor %}
-
-          
-
-
+            {% endfor %}        
           <div class="auth__actions">
             <input class="btn btn--sub btn--lg" type="submit" value="Sign  In" />
           </div>
@@ -48,13 +37,8 @@
         </div>
       </div>
     </div>
-
-
     <p>Already Have an Account <a href="{% url 'login' %}">Sign Up</a></p>
-
 {% else %}
-
-
 <div class="auth">
     <div class="card">
       <div class="auth__header text-center">
@@ -64,7 +48,6 @@
         <h3>Account Login</h3>
         <p>Hello Developer, Welcome Back!</p>
       </div>
-
       <form action="{% url 'login' %}" method="post" class="form auth__form">
         {% csrf_token %}
         <!-- Input:Email -->
@@ -78,7 +61,6 @@
             placeholder="Enter your username..."
           />
         </div>
-
         <!-- Input:Password -->
         <div class="form__field">
           <label for="formInput#password">Password: </label>
