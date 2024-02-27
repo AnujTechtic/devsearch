@@ -1,13 +1,19 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import Project
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from .models import Project, Tag
 from .forms import ProjectForm
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
+from .utils import searchProjects, paginateProjects
+
 
 @login_required(login_url='login')
 def projecs(request):
-    projects = Project.objects.all()
-    return render(request, 'projects/projec.html', {'projects':projects})
+    projecs, search_query = searchProjects(request)
+    custom_range, projecs  = paginateProjects(request, projecs, 3)
+    context = {'projects':projecs, 'search':search_query, 'range':custom_range}
+    return render(request, 'projects/projec.html', context )
 @login_required(login_url='login')
 def project(request, pk):
     projectObj = Project.objects.get(id=pk)

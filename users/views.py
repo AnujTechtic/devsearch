@@ -2,9 +2,11 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.db.models import Q
 from django.contrib.auth.models import User
 from .forms import CustomUserCreationForm, ProfileForm, SkillForm
-from .models import Profile
+from .models import Profile, Skill
+from .utils import searchProfiles, paginateProfiles
 
 # Create your views here.
 def loginUser(request):
@@ -49,8 +51,9 @@ def registerUser(request):
    return render(request, 'users/login-register.html', context)
 
 def profiles(request):
- profiles = Profile.objects.all()
- context = {'profiles': profiles}
+ profiles, search_query = searchProfiles(request)
+ custom_range, profiles  = paginateProfiles(request, profiles, 3)
+ context = {'profiles': profiles, 'search':search_query, 'range':custom_range, 'profiles':profiles}
  return render(request, 'users/profiles.html', context)
 
 def userProfile(request, pk):
