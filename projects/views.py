@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from .models import Project, Tag
-from .forms import ProjectForm
+from .forms import ProjectForm, ReviewForm
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from .utils import searchProjects, paginateProjects
@@ -14,11 +14,12 @@ def projecs(request):
     custom_range, projecs  = paginateProjects(request, projecs, 3)
     context = {'projects':projecs, 'search':search_query, 'range':custom_range}
     return render(request, 'projects/projec.html', context )
+
 @login_required(login_url='login')
 def project(request, pk):
     projectObj = Project.objects.get(id=pk)
-    # tags = projectObj.tags.all()
-    return render(request, 'projects/project.html', {'project':projectObj})
+    form = ReviewForm()
+    return render(request, 'projects/project.html', {'project':projectObj, 'form':form})
 
 @login_required(login_url='login')
 def createProject(request):
